@@ -20,6 +20,7 @@ CZMQ_EXPORT int zwssock_bind(zwssock_t *self, char *endpoint);
 CZMQ_EXPORT int zwssock_send(zwssock_t *self, zmsg_t **msg_p);
 
 CZMQ_EXPORT zmsg_t * zwssock_recv(zwssock_t *self);
+CZMQ_EXPORT zmsg_t * zwssock_recv_with_timeout(zwssock_t *self, long usTimeout);
 
 CZMQ_EXPORT void* zwssock_handle(zwssock_t *self);
 

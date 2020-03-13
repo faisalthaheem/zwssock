@@ -75,6 +75,25 @@ zmsg_t * zwssock_recv(zwssock_t *self)
 	return msg;
 }
 
+zmsg_t * zwssock_recv_with_timeout(zwssock_t *self, long usTimeout)
+{
+	zmq_pollitem_t zmq_poll_items[1];
+	zmq_poll_items[0].socket = self->data;
+	zmq_poll_items[0].fd = 0;
+	zmq_poll_items[0].events = ZMQ_POLLIN;
+	zmq_poll_items[0].revents = 0;
+
+	//see http://api.zeromq.org/2-1:zmq-poll
+	int rc = zmq_poll(zmq_poll_items, 1, usTimeout);
+	if(rc == 0){
+		return 0;
+	}else if(rc < 0){
+		return -1;
+	}else{
+		return zwssock_recv(self);
+	}
+}
+
 void* zwssock_handle(zwssock_t *self)
 {
 	assert(self);
